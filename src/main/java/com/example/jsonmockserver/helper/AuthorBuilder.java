@@ -3,8 +3,9 @@ package com.example.jsonmockserver.helper;
 import com.example.jsonmockserver.common.exception.InvalidDataException;
 import com.example.jsonmockserver.dto.pojo.Authors;
 import com.example.jsonmockserver.dto.pojo.FileData;
-import com.example.jsonmockserver.dto.pojo.Posts;
 import com.example.jsonmockserver.dto.requests.AddAuthorRequest;
+import com.example.jsonmockserver.dto.requests.UpdateAuthorRequest;
+import com.example.jsonmockserver.validator.AuthorValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,9 +16,12 @@ public class AuthorBuilder {
 
     private final StoredFileDeserializer storedFileDeserializer;
 
+    private final AuthorValidator authorValidator;
+
     @Autowired
-    public AuthorBuilder(StoredFileDeserializer storedFileDeserializer) {
+    public AuthorBuilder(StoredFileDeserializer storedFileDeserializer, AuthorValidator authorValidator) {
         this.storedFileDeserializer = storedFileDeserializer;
+        this.authorValidator = authorValidator;
     }
 
     public Authors buildAuthor(AddAuthorRequest addAuthorRequest) {
@@ -57,6 +61,21 @@ public class AuthorBuilder {
     public List<Authors> getAllAuthors() {
         FileData fileData = getFileData();
         List<Authors> authors = fileData.getAuthors();
+        return authors;
+    }
+
+    public Authors updateAuthor(Long authorId, UpdateAuthorRequest updateAuthorRequest) throws InvalidDataException {
+        Authors authors = new Authors();
+        FileData fileData = getFileData();
+        Map<Long, Authors> authorsMap = getAuthorsMap(fileData);
+        if (!authorsMap.containsKey(authorId)) {
+            throw new InvalidDataException("Author Update Fail Since Author Not Found With AuthorId : " + authorId);
+        }
+        authors = authorsMap.get(authorId);
+        authorValidator.validateUpdateAuthorRequest(authors, updateAuthorRequest);
+        authorsMap.put(authors.getId(), authors);
+        fileData.setAuthors(new ArrayList<>(authorsMap.values()));
+        storedFileDeserializer.updateFileDataForPosts(fileData);
         return authors;
     }
 

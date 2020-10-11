@@ -3,6 +3,7 @@ package com.example.jsonmockserver.service;
 import com.example.jsonmockserver.common.exception.InvalidDataException;
 import com.example.jsonmockserver.dto.pojo.Authors;
 import com.example.jsonmockserver.dto.requests.AddAuthorRequest;
+import com.example.jsonmockserver.dto.requests.UpdateAuthorRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,4 +19,6 @@ public interface AuthorsService {
     List<Authors> getFilteredAuthors() throws InvalidDataException;
 
     List<Authors> getAllAuthors() throws InvalidDataException;
+
+    Authors updateAuthor(Long authorId, UpdateAuthorRequest updateAuthorRequest) throws InvalidDataException;
 }

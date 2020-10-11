@@ -3,6 +3,7 @@ package com.example.jsonmockserver.service.impl;
 import com.example.jsonmockserver.common.exception.InvalidDataException;
 import com.example.jsonmockserver.dto.pojo.Authors;
 import com.example.jsonmockserver.dto.requests.AddAuthorRequest;
+import com.example.jsonmockserver.dto.requests.UpdateAuthorRequest;
 import com.example.jsonmockserver.helper.AuthorBuilder;
 import com.example.jsonmockserver.service.AuthorsService;
 import com.example.jsonmockserver.validator.AuthorValidator;
@@ -51,5 +52,10 @@ public class AuthorsServiceImpl implements AuthorsService {
     @Override
     public List<Authors> getAllAuthors() throws InvalidDataException {
         return authorBuilder.getAllAuthors();
+    }
+
+    @Override
+    public Authors updateAuthor(Long authorId, UpdateAuthorRequest updateAuthorRequest) throws InvalidDataException {
+        return authorBuilder.updateAuthor(authorId, updateAuthorRequest);
     }
 }

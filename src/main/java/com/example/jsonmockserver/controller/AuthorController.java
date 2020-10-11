@@ -5,6 +5,7 @@ import com.example.jsonmockserver.common.constants.Constant;
 import com.example.jsonmockserver.common.exception.InvalidDataException;
 import com.example.jsonmockserver.dto.pojo.Authors;
 import com.example.jsonmockserver.dto.requests.AddAuthorRequest;
+import com.example.jsonmockserver.dto.requests.UpdateAuthorRequest;
 import com.example.jsonmockserver.dto.responses.AuthorsResponse;
 import com.example.jsonmockserver.dto.responses.Response;
 import com.example.jsonmockserver.helper.APIResponse;
@@ -51,7 +52,7 @@ public class AuthorController {
         return APIResponse.renderSuccess("Author Deleted SuccessFully", 100, HttpStatus.OK);
     }
 
-    @GetMapping("/authors")
+    @GetMapping("/authors/filtered")
     @EnableLogging
     public ResponseEntity<Response> getFilterAuthors(@RequestParam(value = "author_ids", required = false) String author_ids,
                                                      @RequestParam(value = "title", required = false) String title,
@@ -61,11 +62,19 @@ public class AuthorController {
         return APIResponse.renderSuccess(authorsResponse, 100, HttpStatus.OK);
     }
 
-    @GetMapping("/authors/all")
+    @GetMapping("/authors")
     @EnableLogging
     public ResponseEntity<Response> getAllAuthors() throws InvalidDataException {
         List<Authors> authors = authorsService.getAllAuthors();
         AuthorsResponse authorsResponse = new AuthorsResponse(authors);
+        return APIResponse.renderSuccess(authorsResponse, 100, HttpStatus.OK);
+    }
+
+    @PutMapping("authors/{author_id}")
+    @EnableLogging
+    public ResponseEntity<Response> updateAuthor(@PathVariable(value = "author_id") Long authorId, @RequestBody UpdateAuthorRequest updateAuthorRequest) throws InvalidDataException {
+        Authors authors = authorsService.updateAuthor(authorId, updateAuthorRequest);
+        AuthorsResponse authorsResponse = new AuthorsResponse(Collections.singletonList(authors));
         return APIResponse.renderSuccess(authorsResponse, 100, HttpStatus.OK);
     }
 
