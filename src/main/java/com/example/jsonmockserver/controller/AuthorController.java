@@ -52,16 +52,6 @@ public class AuthorController {
         return APIResponse.renderSuccess("Author Deleted SuccessFully", 100, HttpStatus.OK);
     }
 
-    @GetMapping("/authors/filtered")
-    @EnableLogging
-    public ResponseEntity<Response> getFilterAuthors(@RequestParam(value = "author_ids", required = false) String author_ids,
-                                                     @RequestParam(value = "title", required = false) String title,
-                                                     @RequestParam(value = "author", required = false) String author) throws InvalidDataException {
-        List<Authors> authors = authorsService.getFilteredAuthors();
-        AuthorsResponse authorsResponse = new AuthorsResponse(authors);
-        return APIResponse.renderSuccess(authorsResponse, 100, HttpStatus.OK);
-    }
-
     @GetMapping("/authors")
     @EnableLogging
     public ResponseEntity<Response> getAllAuthors() throws InvalidDataException {

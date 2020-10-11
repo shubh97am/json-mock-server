@@ -14,7 +14,7 @@ public class Authors {
     private Long id;
     private String firstName;
     private String lastName;
-    private Long posts = 0L;
+    private Long posts ;
 
     public Authors() {
 
