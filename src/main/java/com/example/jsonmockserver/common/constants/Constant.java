@@ -22,6 +22,26 @@ public class Constant {
         public static final String BASE_URL = "/api/mock-server";
     }
 
+    public static class PostControllerConstants {
+        private PostControllerConstants() {
+        }
+
+        public static final String ADD_POST = "/posts";
+        public static final String GET_POST = "/posts/{post_id}";
+        public static final String DELETE_POST = "/posts/{post_id}";
+        public static final String GET_ALL_POST = "/posts";
+        public static final String UPDATE_POST = "posts/{post_id}";
+
+    }
+
+    public static class Params {
+        private Params() {
+        }
+
+        public static final String POST_ID = "post_id";
+
+    }
+
     public static class Logging {
         private Logging() {
 

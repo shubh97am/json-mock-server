@@ -1,7 +1,6 @@
 package com.example.jsonmockserver.controller;
 
 import com.example.jsonmockserver.common.annotations.EnableLogging;
-import com.example.jsonmockserver.common.constants.Constant;
 import com.example.jsonmockserver.common.exception.InvalidDataException;
 import com.example.jsonmockserver.dto.pojo.Posts;
 import com.example.jsonmockserver.dto.requests.AddPostRequest;
@@ -18,8 +17,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collections;
 import java.util.List;
 
+import static com.example.jsonmockserver.common.constants.Constant.Controller;
+import static com.example.jsonmockserver.common.constants.Constant.PostControllerConstants.*;
+import static com.example.jsonmockserver.common.constants.Constant.Params.*;
+
 @RestController
-@RequestMapping(Constant.Controller.BASE_URL)
+@RequestMapping(Controller.BASE_URL)
 public class PostsController {
 
     private final PostsService postsService;
@@ -29,7 +32,7 @@ public class PostsController {
         this.postsService = postsService;
     }
 
-    @PostMapping("/posts")
+    @PostMapping(ADD_POST)
     @EnableLogging
     public ResponseEntity<Response> addPost(@RequestBody AddPostRequest addPostRequest) throws InvalidDataException {
         Posts posts = postsService.addPost(addPostRequest);
@@ -37,19 +40,36 @@ public class PostsController {
         return APIResponse.renderSuccess(postsResponse, 100, HttpStatus.OK);
     }
 
-    @GetMapping("/posts/{post_id}")
+    @GetMapping(GET_POST)
     @EnableLogging
-    public ResponseEntity<Response> getPost(@PathVariable(value = "post_id") Long postId) throws InvalidDataException {
+    public ResponseEntity<Response> getPost(@PathVariable(value = POST_ID) Long postId) throws InvalidDataException {
         Posts posts = postsService.getPost(postId);
         PostsResponse postsResponse = new PostsResponse(Collections.singletonList(posts));
         return APIResponse.renderSuccess(postsResponse, 100, HttpStatus.OK);
     }
 
-    @DeleteMapping("/posts/{post_id}")
+    @DeleteMapping(DELETE_POST)
     @EnableLogging
-    public ResponseEntity<Response> removePost(@PathVariable(value = "post_id") Long postId) throws InvalidDataException {
+    public ResponseEntity<Response> removePost(@PathVariable(value = POST_ID) Long postId) throws InvalidDataException {
         postsService.deletePost(postId);
         return APIResponse.renderSuccess("Post Deleted SuccessFully", 100, HttpStatus.OK);
+    }
+
+
+    @PatchMapping(UPDATE_POST)
+    @EnableLogging
+    public ResponseEntity<Response> updatePost(@PathVariable(value = POST_ID) Long postId, @RequestBody UpdatePostRequest updatePostRequest) throws InvalidDataException {
+        Posts posts = postsService.updatePost(postId, updatePostRequest);
+        PostsResponse postsResponse = new PostsResponse(Collections.singletonList(posts));
+        return APIResponse.renderSuccess(postsResponse, 100, HttpStatus.OK);
+    }
+
+    @GetMapping(GET_ALL_POST)
+    @EnableLogging
+    public ResponseEntity<Response> getAllPosts() throws InvalidDataException {
+        List<Posts> posts = postsService.getAllPosts();
+        PostsResponse postsResponse = new PostsResponse(posts);
+        return APIResponse.renderSuccess(postsResponse, 100, HttpStatus.OK);
     }
 
     @GetMapping("/posts/filtered")
@@ -62,19 +82,4 @@ public class PostsController {
         return APIResponse.renderSuccess(postsResponse, 100, HttpStatus.OK);
     }
 
-    @GetMapping("/posts")
-    @EnableLogging
-    public ResponseEntity<Response> getAllPosts() throws InvalidDataException {
-        List<Posts> posts = postsService.getAllPosts();
-        PostsResponse postsResponse = new PostsResponse(posts);
-        return APIResponse.renderSuccess(postsResponse, 100, HttpStatus.OK);
-    }
-
-    @PatchMapping("posts/{post_id}")
-    @EnableLogging
-    public ResponseEntity<Response> updatePost(@PathVariable(value = "post_id") Long postId, @RequestBody UpdatePostRequest updatePostRequest) throws InvalidDataException {
-        Posts posts = postsService.updatePost(postId, updatePostRequest);
-        PostsResponse postsResponse = new PostsResponse(Collections.singletonList(posts));
-        return APIResponse.renderSuccess(postsResponse, 100, HttpStatus.OK);
-    }
 }
