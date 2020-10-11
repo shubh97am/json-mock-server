@@ -44,6 +44,4 @@ public class Constant {
         public static final String METHOD_PHASE_COMPLETED = "completed";
         public static final String METHOD_PHASE_EXCEPTION_THROWN = "exceptionThrown";
     }
-
-
 }
