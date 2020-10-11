@@ -35,7 +35,8 @@ public class FileDataController {
     @PostMapping("/file-data")
     @EnableLogging
     @ValidateRequestAccess
-    public ResponseEntity<Response> clearFileData() throws InvalidDataException {
+    public ResponseEntity<Response> clearFileData(@RequestHeader("user_name") String userName,
+                                                  @RequestHeader("password") String password) throws InvalidDataException {
         fileDataService.clearFileData();
         return APIResponse.renderSuccess("Operation Successful", 100, HttpStatus.OK);
     }
