@@ -41,10 +41,20 @@ public class PostBuilder {
         return postResult;
     }
 
+
+    public void deletePostFromFile(Long postId) {
+        FileData fileData = getFileData();
+        Map<Long, Posts> postsMap = getPostMap(fileData);
+        if (postsMap.containsKey(postId)) {
+            postsMap.remove(postId);
+            fileData.setPosts(new ArrayList<>(postsMap.values()));
+            storedFileDeserializer.updateFileDataForPosts(fileData);
+        }
+    }
+
     public List<Posts> getAllPosts() {
         FileData fileData = getFileData();
-        List<Posts> posts = fileData.getPosts();
-        return posts;
+        return fileData.getPosts();
     }
 
     private Long getPostNextId() {
@@ -59,5 +69,14 @@ public class PostBuilder {
 
     private FileData getFileData() {
         return storedFileDeserializer.getFileData();
+    }
+
+    private Map<Long, Posts> getPostMap(FileData fileData) {
+        Set<Posts> posts = new HashSet<>(fileData.getPosts());
+        Map<Long, Posts> postMap = new HashMap<>();
+        for (Posts post : posts) {
+            postMap.put(post.getId(), post);
+        }
+        return postMap;
     }
 }

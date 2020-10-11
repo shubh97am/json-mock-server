@@ -10,8 +10,8 @@ public class Constant {
 
         }
 
-        public static final String READ_STORED_RESULT_FILE_PATH = "/store.json";
-        public static final String WRITE_STORED_RESULT_FILE_PATH = "/store.json";
+        public static final String READ_STORED_RESULT_FILE_PATH = "store1.json";
+        public static final String WRITE_STORED_RESULT_FILE_PATH = "store1.json";
     }
 
     public static class Controller {

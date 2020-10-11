@@ -39,6 +39,11 @@ public class PostsServiceImpl implements PostsService {
     }
 
     @Override
+    public void deletePost(Long postId) throws InvalidDataException {
+        postBuilder.deletePostFromFile(postId);
+    }
+
+    @Override
     public List<Posts> getFilteredPosts() throws InvalidDataException {
         return new ArrayList<>();
     }

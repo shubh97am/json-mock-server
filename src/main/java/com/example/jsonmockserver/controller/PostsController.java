@@ -44,6 +44,13 @@ public class PostsController {
         return APIResponse.renderSuccess(postsResponse, 100, HttpStatus.OK);
     }
 
+    @DeleteMapping("/posts/{post_id}")
+    @EnableLogging
+    public ResponseEntity<Response> removePost(@PathVariable(value = "post_id") Long postId) throws InvalidDataException {
+        postsService.deletePost(postId);
+        return APIResponse.renderSuccess("Post Deleted SuccessFully", 100, HttpStatus.OK);
+    }
+
     @GetMapping("/posts")
     @EnableLogging
     public ResponseEntity<Response> getFilterPosts(@RequestParam(value = "post_ids", required = false) String postIds,

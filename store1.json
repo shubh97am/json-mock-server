@@ -1,0 +1,51 @@
+{
+  "posts" : [ {
+    "id" : 1,
+    "title" : "A",
+    "author" : "shubham",
+    "views" : 40,
+    "reviews" : 30
+  }, {
+    "id" : 2,
+    "title" : "A",
+    "author" : "Anirudh",
+    "views" : 100,
+    "reviews" : 20
+  }, {
+    "id" : 5,
+    "title" : "A",
+    "author" : "Koshal",
+    "views" : 200,
+    "reviews" : 40
+  }, {
+    "id" : 6,
+    "title" : "A",
+    "author" : "shubham",
+    "views" : 40,
+    "reviews" : 30
+  }, {
+    "id" : 7,
+    "title" : "A",
+    "author" : "shubham",
+    "views" : 40,
+    "reviews" : 30
+  }, {
+    "id" : 8,
+    "title" : "A",
+    "author" : "shubham",
+    "views" : 40,
+    "reviews" : 30
+  }, {
+    "id" : 9,
+    "title" : "A",
+    "author" : "shubham",
+    "views" : 40,
+    "reviews" : 30
+  } ],
+  "authors" : [ {
+    "id" : 2,
+    "first_name" : "anirudh",
+    "last_name" : "dhakad",
+    "posts" : 2
+  } ]
+}
