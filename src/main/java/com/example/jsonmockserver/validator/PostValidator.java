@@ -2,7 +2,9 @@ package com.example.jsonmockserver.validator;
 
 
 import com.example.jsonmockserver.common.exception.InvalidDataException;
+import com.example.jsonmockserver.dto.pojo.Posts;
 import com.example.jsonmockserver.dto.requests.AddPostRequest;
+import com.example.jsonmockserver.dto.requests.UpdatePostRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -25,6 +27,31 @@ public class PostValidator {
         Long reviews = Optional.ofNullable(addPostRequest.getReviews())
                 .orElse(0L);
         Long views = Optional.ofNullable(addPostRequest.getViews())
+                .orElse(0L);
+
+        if (reviews > views) {
+            throw new InvalidDataException("Review Must be less than Views");
+        }
+    }
+
+    public void validateUpdatePostRequest(Posts posts, UpdatePostRequest updatePostRequest) throws InvalidDataException {
+        if (!StringUtils.isEmpty(updatePostRequest.getTitle())) {
+            posts.setTitle(updatePostRequest.getTitle());
+        }
+
+        if (!StringUtils.isEmpty(updatePostRequest.getAuthor())) {
+            posts.setAuthor(updatePostRequest.getAuthor());
+        }
+        if (!StringUtils.isEmpty(updatePostRequest.getViews())) {
+            posts.setViews(updatePostRequest.getViews());
+        }
+
+        if (!StringUtils.isEmpty(updatePostRequest.getReviews())) {
+            posts.setReviews(updatePostRequest.getReviews());
+        }
+        Long reviews = Optional.ofNullable(posts.getReviews())
+                .orElse(0L);
+        Long views = Optional.ofNullable(posts.getViews())
                 .orElse(0L);
 
         if (reviews > views) {

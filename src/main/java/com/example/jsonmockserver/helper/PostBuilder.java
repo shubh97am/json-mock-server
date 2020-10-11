@@ -4,6 +4,8 @@ import com.example.jsonmockserver.common.exception.InvalidDataException;
 import com.example.jsonmockserver.dto.pojo.FileData;
 import com.example.jsonmockserver.dto.pojo.Posts;
 import com.example.jsonmockserver.dto.requests.AddPostRequest;
+import com.example.jsonmockserver.dto.requests.UpdatePostRequest;
+import com.example.jsonmockserver.validator.PostValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,10 +14,12 @@ import java.util.*;
 @Component
 public class PostBuilder {
     private final StoredFileDeserializer storedFileDeserializer;
+    private final PostValidator postValidator;
 
     @Autowired
-    public PostBuilder(StoredFileDeserializer storedFileDeserializer) {
+    public PostBuilder(StoredFileDeserializer storedFileDeserializer, PostValidator postValidator) {
         this.storedFileDeserializer = storedFileDeserializer;
+        this.postValidator = postValidator;
     }
 
     public Posts buildPost(AddPostRequest addPostRequest) {
@@ -55,6 +59,21 @@ public class PostBuilder {
     public List<Posts> getAllPosts() {
         FileData fileData = getFileData();
         return fileData.getPosts();
+    }
+
+    public Posts updatePost(Long postId, UpdatePostRequest updatePostRequest) throws InvalidDataException {
+        Posts posts = new Posts();
+        FileData fileData = getFileData();
+        Map<Long, Posts> postsMap = getPostMap(fileData);
+        if (!postsMap.containsKey(postId)) {
+            throw new InvalidDataException("Post Update Fail Since Post Not Found With PostId : " + postId);
+        }
+        posts = postsMap.get(postId);
+        postValidator.validateUpdatePostRequest(posts, updatePostRequest);
+        postsMap.put(posts.getId(), posts);
+        fileData.setPosts(new ArrayList<>(postsMap.values()));
+        storedFileDeserializer.updateFileDataForPosts(fileData);
+        return posts;
     }
 
     private Long getPostNextId() {

@@ -5,6 +5,7 @@ import com.example.jsonmockserver.common.constants.Constant;
 import com.example.jsonmockserver.common.exception.InvalidDataException;
 import com.example.jsonmockserver.dto.pojo.Posts;
 import com.example.jsonmockserver.dto.requests.AddPostRequest;
+import com.example.jsonmockserver.dto.requests.UpdatePostRequest;
 import com.example.jsonmockserver.dto.responses.PostsResponse;
 import com.example.jsonmockserver.dto.responses.Response;
 import com.example.jsonmockserver.helper.APIResponse;
@@ -51,7 +52,7 @@ public class PostsController {
         return APIResponse.renderSuccess("Post Deleted SuccessFully", 100, HttpStatus.OK);
     }
 
-    @GetMapping("/posts")
+    @GetMapping("/posts/filtered")
     @EnableLogging
     public ResponseEntity<Response> getFilterPosts(@RequestParam(value = "post_ids", required = false) String postIds,
                                                    @RequestParam(value = "title", required = false) String title,
@@ -61,11 +62,19 @@ public class PostsController {
         return APIResponse.renderSuccess(postsResponse, 100, HttpStatus.OK);
     }
 
-    @GetMapping("/posts/all")
+    @GetMapping("/posts")
     @EnableLogging
     public ResponseEntity<Response> getAllPosts() throws InvalidDataException {
         List<Posts> posts = postsService.getAllPosts();
         PostsResponse postsResponse = new PostsResponse(posts);
+        return APIResponse.renderSuccess(postsResponse, 100, HttpStatus.OK);
+    }
+
+    @PatchMapping("posts/{post_id}")
+    @EnableLogging
+    public ResponseEntity<Response> updatePost(@PathVariable(value = "post_id") Long postId, @RequestBody UpdatePostRequest updatePostRequest) throws InvalidDataException {
+        Posts posts = postsService.updatePost(postId, updatePostRequest);
+        PostsResponse postsResponse = new PostsResponse(Collections.singletonList(posts));
         return APIResponse.renderSuccess(postsResponse, 100, HttpStatus.OK);
     }
 }

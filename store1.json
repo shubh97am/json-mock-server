@@ -1,16 +1,10 @@
 {
   "posts" : [ {
-    "id" : 1,
-    "title" : "A",
-    "author" : "shubham",
-    "views" : 40,
-    "reviews" : 30
-  }, {
     "id" : 2,
-    "title" : "A",
-    "author" : "Anirudh",
-    "views" : 100,
-    "reviews" : 20
+    "title" : "CommerceIQ",
+    "author" : "malav",
+    "views" : 40,
+    "reviews" : 10
   }, {
     "id" : 5,
     "title" : "A",

@@ -3,6 +3,7 @@ package com.example.jsonmockserver.service.impl;
 import com.example.jsonmockserver.common.exception.InvalidDataException;
 import com.example.jsonmockserver.dto.pojo.Posts;
 import com.example.jsonmockserver.dto.requests.AddPostRequest;
+import com.example.jsonmockserver.dto.requests.UpdatePostRequest;
 import com.example.jsonmockserver.helper.PostBuilder;
 import com.example.jsonmockserver.service.PostsService;
 import com.example.jsonmockserver.validator.PostValidator;
@@ -51,5 +52,10 @@ public class PostsServiceImpl implements PostsService {
     @Override
     public List<Posts> getAllPosts() throws InvalidDataException {
         return postBuilder.getAllPosts();
+    }
+
+    @Override
+    public Posts updatePost(Long postId, UpdatePostRequest updatePostRequest) throws InvalidDataException {
+        return postBuilder.updatePost(postId, updatePostRequest);
     }
 }
