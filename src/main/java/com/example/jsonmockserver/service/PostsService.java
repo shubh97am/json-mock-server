@@ -19,6 +19,8 @@ public interface PostsService {
 
     List<Posts> getFilteredPosts(BuildPostFilterSortRequest request) throws InvalidDataException;
 
+    List<Posts> searchPosts(String  query) throws InvalidDataException;
+
     List<Posts> getAllPosts() throws InvalidDataException;
 
     Posts updatePost(Long postId, UpdatePostRequest addPostRequest) throws InvalidDataException;

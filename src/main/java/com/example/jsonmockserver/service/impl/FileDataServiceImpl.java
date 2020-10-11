@@ -24,7 +24,7 @@ public class FileDataServiceImpl implements FileDataService {
     }
 
     @Override
-    public ResponseEntity<Response> clearFileData() throws InvalidDataException {
-        return null;
+    public void clearFileData() throws InvalidDataException {
+        storedFileDeserializer.clearFileData();
     }
 }

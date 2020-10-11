@@ -52,6 +52,11 @@ public class PostsServiceImpl implements PostsService {
     }
 
     @Override
+    public List<Posts> searchPosts(String query) throws InvalidDataException {
+        return postBuilder.searchPosts(query);
+    }
+
+    @Override
     public List<Posts> getAllPosts() throws InvalidDataException {
         return postBuilder.getAllPosts();
     }

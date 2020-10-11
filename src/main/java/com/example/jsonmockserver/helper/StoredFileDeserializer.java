@@ -12,6 +12,7 @@ import com.google.gson.Gson;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -54,6 +55,14 @@ public class StoredFileDeserializer {
             throw new StoredFileReadWriteException("error while deserialize StoredFile");
         }
     }
+
+    public void clearFileData() {
+        FileData fileData = new FileData();
+        fileData.setAuthors(new ArrayList<>());
+        fileData.setPosts(new ArrayList<>());
+        updateFileData(fileData);
+    }
+
 
     private void updateFileData(FileData fileData) {
 

@@ -66,6 +66,36 @@ public class PostBuilder {
         return fileData.getPosts();
     }
 
+    public List<Posts> searchPosts(String query) {
+        FileData fileData = getFileData();
+        if (StringUtils.isEmpty(query)) {
+            return fileData.getPosts();
+        }
+        List<Posts> posts = new ArrayList<>();
+        for (Posts post : fileData.getPosts()) {
+            if (!StringUtils.isEmpty(post.getId()) && String.valueOf(post.getId()).contains(query)) {
+                posts.add(post);
+                continue;
+            }
+            if (!StringUtils.isEmpty(post.getAuthor()) && post.getAuthor().contains(query)) {
+                posts.add(post);
+                continue;
+            }
+            if (!StringUtils.isEmpty(post.getTitle()) && post.getTitle().contains(query)) {
+                posts.add(post);
+                continue;
+            }
+            if (!StringUtils.isEmpty(post.getReviews()) && String.valueOf(post.getReviews()).contains(query)) {
+                posts.add(post);
+                continue;
+            }
+            if (!StringUtils.isEmpty(post.getViews()) && String.valueOf(post.getViews()).contains(query)) {
+                posts.add(post);
+            }
+        }
+        return posts;
+    }
+
     public List<Posts> getFilteredAndSortedPost(BuildPostFilterSortRequest request) throws InvalidDataException {
         FileData fileData = getFileData();
         List<Posts> posts = fileData.getPosts();

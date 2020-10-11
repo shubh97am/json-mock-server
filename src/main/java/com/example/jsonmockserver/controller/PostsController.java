@@ -73,7 +73,7 @@ public class PostsController {
         return APIResponse.renderSuccess(postsResponse, 100, HttpStatus.OK);
     }
 
-    @GetMapping("/posts/filtered")
+    @GetMapping("/posts")
     @EnableLogging
     public ResponseEntity<Response> getFilterPosts(@RequestParam(value = "title", required = false, defaultValue = "") String title,
                                                    @RequestParam(value = "author", required = false, defaultValue = "") String author,
@@ -81,6 +81,14 @@ public class PostsController {
                                                    @RequestParam(value = "_sort", required = false, defaultValue = "id") String sortingField) throws InvalidDataException {
         BuildPostFilterSortRequest request = new BuildPostFilterSortRequest(title, author, sortType, sortingField);
         List<Posts> posts = postsService.getFilteredPosts(request);
+        PostsResponse postsResponse = new PostsResponse(posts);
+        return APIResponse.renderSuccess(postsResponse, 100, HttpStatus.OK);
+    }
+
+    @GetMapping("/posts/search")
+    @EnableLogging
+    public ResponseEntity<Response> searchPosts(@RequestParam(value = "query", required = false, defaultValue = "") String searchText) throws InvalidDataException {
+        List<Posts> posts = postsService.searchPosts(searchText);
         PostsResponse postsResponse = new PostsResponse(posts);
         return APIResponse.renderSuccess(postsResponse, 100, HttpStatus.OK);
     }

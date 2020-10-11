@@ -30,7 +30,7 @@ public class Constant {
         public static final String ADD_POST = "/posts";
         public static final String GET_POST = "/posts/{post_id}";
         public static final String DELETE_POST = "/posts/{post_id}";
-        public static final String GET_ALL_POST = "/posts";
+        public static final String GET_ALL_POST = "/posts/all";
         public static final String UPDATE_POST = "posts/{post_id}";
 
     }
