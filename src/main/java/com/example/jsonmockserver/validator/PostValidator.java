@@ -2,12 +2,16 @@ package com.example.jsonmockserver.validator;
 
 
 import com.example.jsonmockserver.common.exception.InvalidDataException;
+import com.example.jsonmockserver.dto.pojo.BuildPostFilterSortRequest;
 import com.example.jsonmockserver.dto.pojo.Posts;
 import com.example.jsonmockserver.dto.requests.AddPostRequest;
 import com.example.jsonmockserver.dto.requests.UpdatePostRequest;
+import com.example.jsonmockserver.enumeration.SortField;
+import com.example.jsonmockserver.enumeration.SortType;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Component
@@ -57,5 +61,18 @@ public class PostValidator {
         if (reviews > views) {
             throw new InvalidDataException("Review Must be less than Views");
         }
+    }
+
+    public void validateBuildPostFilterSortRequest(BuildPostFilterSortRequest request) throws InvalidDataException {
+        validateSortType(request.getSortType());
+        validateSortFields(request.getSortField());
+    }
+
+    private void validateSortType(String sortType) throws InvalidDataException {
+        SortType.getSortTypeByKey(sortType);
+    }
+
+    private void validateSortFields(String sortField) throws InvalidDataException {
+        SortField.getSortFieldByKey(sortField);
     }
 }

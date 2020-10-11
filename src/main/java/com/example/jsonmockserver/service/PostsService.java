@@ -1,6 +1,7 @@
 package com.example.jsonmockserver.service;
 
 import com.example.jsonmockserver.common.exception.InvalidDataException;
+import com.example.jsonmockserver.dto.pojo.BuildPostFilterSortRequest;
 import com.example.jsonmockserver.dto.pojo.Posts;
 import com.example.jsonmockserver.dto.requests.AddPostRequest;
 import com.example.jsonmockserver.dto.requests.UpdatePostRequest;
@@ -16,7 +17,7 @@ public interface PostsService {
 
     void deletePost(Long postId) throws InvalidDataException;
 
-    List<Posts> getFilteredPosts() throws InvalidDataException;
+    List<Posts> getFilteredPosts(BuildPostFilterSortRequest request) throws InvalidDataException;
 
     List<Posts> getAllPosts() throws InvalidDataException;
 

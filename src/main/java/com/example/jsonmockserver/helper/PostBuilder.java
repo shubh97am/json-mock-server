@@ -1,15 +1,20 @@
 package com.example.jsonmockserver.helper;
 
 import com.example.jsonmockserver.common.exception.InvalidDataException;
+import com.example.jsonmockserver.dto.pojo.BuildPostFilterSortRequest;
 import com.example.jsonmockserver.dto.pojo.FileData;
 import com.example.jsonmockserver.dto.pojo.Posts;
 import com.example.jsonmockserver.dto.requests.AddPostRequest;
 import com.example.jsonmockserver.dto.requests.UpdatePostRequest;
+import com.example.jsonmockserver.enumeration.SortField;
+import com.example.jsonmockserver.enumeration.SortType;
 import com.example.jsonmockserver.validator.PostValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class PostBuilder {
@@ -59,6 +64,104 @@ public class PostBuilder {
     public List<Posts> getAllPosts() {
         FileData fileData = getFileData();
         return fileData.getPosts();
+    }
+
+    public List<Posts> getFilteredAndSortedPost(BuildPostFilterSortRequest request) throws InvalidDataException {
+        FileData fileData = getFileData();
+        List<Posts> posts = fileData.getPosts();
+        List<Posts> result = posts;
+
+        /**
+         * <>Filtering</>
+         */
+        if (!StringUtils.isEmpty(request.getTitle()) && !StringUtils.isEmpty(request.getAuthor())) {
+
+            result = posts
+                    .stream()
+                    .filter(post -> post.getTitle().equalsIgnoreCase(request.getTitle()))
+                    .filter(post -> post.getAuthor().equalsIgnoreCase(request.getAuthor()))
+                    .collect(Collectors.toList());
+
+
+        } else if (!StringUtils.isEmpty(request.getTitle())) {
+            result = posts
+                    .stream()
+                    .filter(post -> post.getTitle().equalsIgnoreCase(request.getTitle()))
+                    .collect(Collectors.toList());
+        } else if (!StringUtils.isEmpty(request.getAuthor())) {
+            result = posts
+                    .stream()
+                    .filter(post -> post.getAuthor().equalsIgnoreCase(request.getAuthor()))
+                    .collect(Collectors.toList());
+        }
+
+        /**
+         * <>Sorting By default on Id</>
+         */
+        SortType sortType = SortType.getSortTypeByKey(request.getSortType());
+        SortField sortField = SortField.getSortFieldByKey(request.getSortField());
+        if (sortType.getKey().equalsIgnoreCase("asc")) {
+            if (sortField.getKey().equalsIgnoreCase("id")) {
+                Collections.sort(
+                        result,
+                        new Comparator<Posts>() {
+                            public int compare(Posts post1, Posts post2) {
+                                return post1.getId().compareTo(post2.getId());
+                            }
+                        }
+                );
+            } else if (sortField.getKey().equalsIgnoreCase("views")) {
+                Collections.sort(
+                        result,
+                        new Comparator<Posts>() {
+                            public int compare(Posts post1, Posts post2) {
+                                return post1.getViews().compareTo(post2.getViews());
+                            }
+                        }
+                );
+            } else if (sortField.getKey().equalsIgnoreCase("reviews")) {
+                Collections.sort(
+                        result,
+                        new Comparator<Posts>() {
+                            public int compare(Posts post1, Posts post2) {
+                                return post1.getReviews().compareTo(post2.getReviews());
+                            }
+                        }
+                );
+            }
+        } else if (sortType.getKey().equalsIgnoreCase("desc")) {
+
+            if (sortField.getKey().equalsIgnoreCase("id")) {
+                Collections.sort(
+                        result,
+                        new Comparator<Posts>() {
+                            public int compare(Posts post2, Posts post1) {
+                                return post1.getId().compareTo(post2.getId());
+                            }
+                        }
+                );
+            } else if (sortField.getKey().equalsIgnoreCase("views")) {
+                Collections.sort(
+                        result,
+                        new Comparator<Posts>() {
+                            public int compare(Posts post2, Posts post1) {
+                                return post1.getViews().compareTo(post2.getViews());
+                            }
+                        }
+                );
+            } else if (sortField.getKey().equalsIgnoreCase("reviews")) {
+                Collections.sort(
+                        result,
+                        new Comparator<Posts>() {
+                            public int compare(Posts post2, Posts post1) {
+                                return post1.getReviews().compareTo(post2.getReviews());
+                            }
+                        }
+                );
+            }
+        }
+
+        return result;
     }
 
     public Posts updatePost(Long postId, UpdatePostRequest updatePostRequest) throws InvalidDataException {

@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Data;
 
+import java.util.Objects;
+
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
@@ -26,6 +28,6 @@ public class Authors {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.posts = posts;
+        this.posts = Objects.isNull(posts) ? 0 : posts;
     }
 }

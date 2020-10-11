@@ -12,6 +12,7 @@ public class Constant {
 
         public static final String READ_STORED_RESULT_FILE_PATH = "store1.json";
         public static final String WRITE_STORED_RESULT_FILE_PATH = "store1.json";
+        public static final String POST_ID = "post_id";
     }
 
     public static class Controller {
@@ -38,7 +39,7 @@ public class Constant {
         private Params() {
         }
 
-        public static final String POST_ID = "post_id";
+
 
     }
 

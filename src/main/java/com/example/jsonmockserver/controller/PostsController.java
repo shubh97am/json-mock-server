@@ -2,6 +2,7 @@ package com.example.jsonmockserver.controller;
 
 import com.example.jsonmockserver.common.annotations.EnableLogging;
 import com.example.jsonmockserver.common.exception.InvalidDataException;
+import com.example.jsonmockserver.dto.pojo.BuildPostFilterSortRequest;
 import com.example.jsonmockserver.dto.pojo.Posts;
 import com.example.jsonmockserver.dto.requests.AddPostRequest;
 import com.example.jsonmockserver.dto.requests.UpdatePostRequest;
@@ -19,7 +20,7 @@ import java.util.List;
 
 import static com.example.jsonmockserver.common.constants.Constant.Controller;
 import static com.example.jsonmockserver.common.constants.Constant.PostControllerConstants.*;
-import static com.example.jsonmockserver.common.constants.Constant.Params.*;
+import static com.example.jsonmockserver.common.constants.Constant.Fields.*;
 
 @RestController
 @RequestMapping(Controller.BASE_URL)
@@ -74,10 +75,12 @@ public class PostsController {
 
     @GetMapping("/posts/filtered")
     @EnableLogging
-    public ResponseEntity<Response> getFilterPosts(@RequestParam(value = "post_ids", required = false) String postIds,
-                                                   @RequestParam(value = "title", required = false) String title,
-                                                   @RequestParam(value = "author", required = false) String author) throws InvalidDataException {
-        List<Posts> posts = postsService.getFilteredPosts();
+    public ResponseEntity<Response> getFilterPosts(@RequestParam(value = "title", required = false, defaultValue = "") String title,
+                                                   @RequestParam(value = "author", required = false, defaultValue = "") String author,
+                                                   @RequestParam(value = "_order", required = false, defaultValue = "asc") String sortType,
+                                                   @RequestParam(value = "_sort", required = false, defaultValue = "id") String sortingField) throws InvalidDataException {
+        BuildPostFilterSortRequest request = new BuildPostFilterSortRequest(title, author, sortType, sortingField);
+        List<Posts> posts = postsService.getFilteredPosts(request);
         PostsResponse postsResponse = new PostsResponse(posts);
         return APIResponse.renderSuccess(postsResponse, 100, HttpStatus.OK);
     }
