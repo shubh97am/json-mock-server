@@ -16,7 +16,7 @@ import java.util.Map;
 
 @Aspect
 @Component
-@Order(0)
+@Order(1)
 public class LoggingAspect {
 
     @Around("@annotation(logging)")

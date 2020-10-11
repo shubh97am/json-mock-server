@@ -2,6 +2,7 @@ package com.example.jsonmockserver.controller;
 
 
 import com.example.jsonmockserver.common.annotations.EnableLogging;
+import com.example.jsonmockserver.common.annotations.ValidateRequestAccess;
 import com.example.jsonmockserver.common.constants.Constant;
 import com.example.jsonmockserver.common.exception.InvalidDataException;
 import com.example.jsonmockserver.dto.pojo.FileData;
@@ -33,6 +34,7 @@ public class FileDataController {
 
     @PostMapping("/file-data")
     @EnableLogging
+    @ValidateRequestAccess
     public ResponseEntity<Response> clearFileData() throws InvalidDataException {
         fileDataService.clearFileData();
         return APIResponse.renderSuccess("Operation Successful", 100, HttpStatus.OK);
