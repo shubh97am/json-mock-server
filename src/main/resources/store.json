@@ -22,5 +22,18 @@
       "reviews": 40
     }
   ],
-  "authors": []
+  "authors": [
+    {
+      "id": "1",
+      "first_name": "shubham",
+      "last_name": "malav",
+      "posts": 3
+    },
+    {
+      "id": "2",
+      "first_name": "anirudh",
+      "last_name": "dhakad",
+      "posts": 2
+    }
+  ]
 }

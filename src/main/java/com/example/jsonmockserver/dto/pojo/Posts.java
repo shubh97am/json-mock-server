@@ -12,8 +12,8 @@ public class Posts {
     private Long id;
     private String title;
     private String author;
-    private Long views;
-    private Long reviews;
+    private Long views = 0L;
+    private Long reviews = 0L;
 
     public Posts() {
 
